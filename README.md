@@ -1,15 +1,9 @@
-# MicroMarine Web — Public Preview
+# MicroMotion · interaktive Vorschau
 
-Experimental browser-based RC model control interface.
+Browserdemo für Modellsteuerungs-Oberflächen. Startdesign Walnut; weitere Designs und Segel-/Motor-/Differential-Demos auswählbar. Alle Instrumente und Steuerwerte sind simuliert. Keine Fahrzeug-, USB-, Bluetooth- oder WLAN-Hardwareverbindung aus dieser Demo. STOPP setzt nur simulierte Ausgaben zurück.
 
-**Live preview (after enabling GitHub Pages):** https://ralfneuhaeuser.github.io/micromarine-preview/
+Demo-Einstellungen zeigen Handanordnung und ein virtuelles Antriebslimit; keine echte Fahrzeugkalibrierung. Ohne Konto und Analyse-/Trackingdienste; Designauswahl kann lokal im Browser gespeichert werden. Die Demo startet trotzdem bewusst in Walnut.
 
-## Pages
-- [MicroMarine cockpit](./index.html) — experimental interface; main cockpit hardware control is not validated.
-- [USB Servo Lab](./usb-servo-lab.html) — experimental Web Serial test. A separate Arduino UNO / SG90 setup was physically tested on 2026-11-02. Requires a compatible desktop browser and appropriate hardware.
+Icon-/Manifestpaket für Home-Screen-Verknüpfungen und Browser. Unterstützungsumfang unterscheidet sich je Browser; keine universelle Installierbarkeitszusage.
 
-## Safety and status
-Development preview, not a finished or safety-certified remote-control system. Do not use for hazardous or unattended operation. Safe behavior depends on hardware and firmware, including an appropriate failsafe.
-
-## Scope
-Only selected browser preview files are published here. Internal strategy and development notes are maintained separately. Public availability does not itself grant an open-source license. Third-party rights remain with their owners.
+Stand:14.November2026. Produktentwicklung; keine zugesagten fertigen Hardwarepakete, kein sicherheitswirksamer Notstopp und keine neue Lizenzfestlegung.
