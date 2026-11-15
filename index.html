@@ -602,7 +602,7 @@ body[data-theme="walnut"] .brand-walnut-logo{display:block;position:relative;fon
 body[data-theme="walnut"] .brand-walnut-logo::after{content:"";position:absolute;left:25%;right:0;bottom:1px;height:1px;background:linear-gradient(90deg,#a8a8a2,#d4d1c9 65%,transparent);transform:rotate(-3deg);transform-origin:right center}
 
 .deck>.stick-panel #leftValue,.deck>.stick-panel #rightValue{box-sizing:border-box;width:17ch!important;max-width:100%!important;margin:4px auto!important;display:flex;align-items:center;justify-content:center;min-height:32px;color:#24150b;background:#f3e1bd}dialog{max-width:min(92vw,520px);border:2px solid #78604b;border-radius:14px;padding:22px;color:#261a13;background:#f6eddc}dialog::backdrop{background:#0009}dialog label{display:block;margin:16px 0}dialog select,dialog input{font:inherit;max-width:100%}#demoSettings,#demoReset{font:inherit;font-size:.8rem;padding:7px 12px;min-height:36px;border-radius:8px;background:#4a4035;color:#f7e9cf;border:1px solid #a3947a;margin:4px 4px 8px 0}body[data-hand=left] .deck>.stick-panel:first-child{grid-column:3;grid-row:1}body[data-hand=left] .deck>.stick-panel:last-child{grid-column:1;grid-row:1}body[data-hand=left] .deck>.switch-panel{grid-column:2;grid-row:1}@media(max-width:640px){body[data-hand=left] .deck>.stick-panel:first-child{grid-column:2}body[data-hand=left] .deck>.stick-panel:last-child{grid-column:1}body[data-hand=left] .deck>.switch-panel{grid-column:1/-1;grid-row:2}}
-</style>
+body[data-reduced-motion=true] *,body[data-reduced-motion=true] *::before,body[data-reduced-motion=true] *::after{animation:none!important;transition:none!important}body[data-demo-hide-telemetry=true] .gauge:not(#thirdGauge){display:none}</style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="favicon-32.png?v=demo1" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=demo1"></head>
 <body data-theme="walnut">
 <main class="shell">
@@ -628,15 +628,15 @@ body[data-theme="walnut"] .brand-walnut-logo::after{content:"";position:absolute
 </section>
 <section class="info" aria-live="polite"><p id="hint">Segelstellung bleibt erhalten · Ruder zentriert sich.</p><p id="outputs">Ruder 0 % · Motor L – · Motor R –</p></section>
 <footer class="warning"><strong>Interaktive Simulation:</strong> Steuerwerte, Akku und Kompass sind Beispieldaten. Keine Verbindung zu Fahrzeugen, keine echte Telemetrie. STOPP setzt nur die Demo zurück.</footer>
-<dialog id="demoDialog"><h2>Demo-Einstellungen</h2><p>Nur für diese Vorführung. Kein Fahrzeugprofil und keine Hardwarekalibrierung.</p><label>Bedienprofil · Handanordnung <select id="demoHand"><option value="right">Gas links · Steuer rechts</option><option value="left">Steuer links · Gas rechts</option></select></label><label>Antriebslimit · Simulation <input id="demoLimit" type="range" min="20" max="100" value="100"><output id="demoLimitValue">100 %</output></label><p>Design und Fahrzeugtyp kannst du direkt im Cockpit wählen. Mehr Funktionen und Fahrzeugklassen sind Entwicklungsziele, keine Zusage dieser Demo.</p><button id="closeDemo" type="button">Schließen</button></dialog></main>
+</main>
 
-<script>
+<script src="demo-config.js"></script><script src="demo-runtime.js"></script><script>
 (()=>{
 "use strict";
 const $=id=>document.getElementById(id);
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
 let heading=0,lastTick=performance.now();
-let profile="sail",left={x:0,y:0},right={x:0,y:0};
+let profile=window.MicroMotionDemo.state.activeProfile,left={x:0,y:0},right={x:0,y:0};
 let neutralDetent=true;
 const theme=$("theme");
 const fs=$("fullscreen");
@@ -644,9 +644,9 @@ const standalone=()=>window.matchMedia("(display-mode: standalone)").matches||na
 function fsLabel(){fs.textContent=standalone()?"✓ App-Modus":document.fullscreenElement?"⤢ Beenden":"⛶ Vollbild"}
 fs.addEventListener("click",async()=>{if(standalone()){alert("MicroMotion läuft bereits im Home-Bildschirm-Modus.");return}if(document.fullscreenElement){try{await document.exitFullscreen()}catch(e){};fsLabel();return}if(document.documentElement.requestFullscreen){try{await document.documentElement.requestFullscreen();fsLabel();return}catch(e){}}alert("Auf dem iPhone: Safari → Teilen → Zum Home-Bildschirm. Danach MicroMotion über das neue Symbol öffnen, um die Safari-Leisten auszublenden.")});
 document.addEventListener("fullscreenchange",fsLabel);fsLabel();
-theme.value="walnut"; // Deliberate public demo default; no private profile import.
+theme.value=window.MicroMotionDemo.model().theme;
 document.body.dataset.theme=theme.value;
-theme.addEventListener("change",()=>{document.body.dataset.theme=theme.value;try{localStorage.setItem("micromotion-public-demo-theme-v1",theme.value)}catch(e){}});
+theme.addEventListener("change",()=>{document.body.dataset.theme=theme.value;window.MicroMotionDemo.theme(theme.value);});
 function paint(el,v){
 if(el.id==="leftPad"){
 const handle=el.querySelector(".throttle-handle");
@@ -660,7 +660,7 @@ el.setAttribute("aria-valuenow",String(Math.round(v.x*100)));
 function scaleSegments(segments){const pt=t=>[100+67*Math.cos(Math.PI*(1-t)),110-67*Math.sin(Math.PI*(1-t))];return segments.map(([a,b,color])=>{const p=pt(a),q=pt(b);return `<path d="M ${p[0].toFixed(2)} ${p[1].toFixed(2)} A 67 67 0 0 1 ${q[0].toFixed(2)} ${q[1].toFixed(2)}" fill="none" stroke="${color}" stroke-width="10"/>`}).join("")}
 function motorTicks(){let lines="";for(let p=-100;p<=100;p+=5){const t=(p+100)/200,theta=Math.PI*(1-t),major=p%50===0,medium=p%25===0;const outer=69,inner=major?54:medium?58:63;const xy=radius=>[100+radius*Math.cos(theta),110-radius*Math.sin(theta)];const a=xy(inner),b=xy(outer);lines+='<line x1="'+a[0].toFixed(2)+'" y1="'+a[1].toFixed(2)+'" x2="'+b[0].toFixed(2)+'" y2="'+b[1].toFixed(2)+'" stroke="#d0c5ac" stroke-width="'+(major?2.6:medium?2:1.1)+'" stroke-linecap="round"/>';}return lines;}
 function update(){
-const throttle=Math.round(-left.y*100*Number(document.getElementById("demoLimit").value)/100),rudder=Math.round(right.x*1000)/10;
+const throttle=Math.round(-left.y*100*window.MicroMotionDemo.model().power/100),rudder=Math.round(window.MicroMotionDemo.steer(right.x)*1000)/10;
 const sail=Math.round((1+left.y)*50); // top = 0% (hauled in), bottom = 100% (eased out)
 const ml=profile==="twin"?clamp(throttle+rudder,-100,100):profile==="single"?throttle:null;
 const mr=profile==="twin"?clamp(throttle-rudder,-100,100):null;
@@ -711,11 +711,11 @@ window.addEventListener("pointerup",release);window.addEventListener("pointercan
 stick("leftPad","left");stick("rightPad","right");
 [["leftPad","left"],["rightPad","right"]].forEach(([id,side])=>{$(id).addEventListener("keydown",e=>{const delta=(e.key==="ArrowUp"||e.key==="ArrowRight")?-.1:(e.key==="ArrowDown"||e.key==="ArrowLeft")?.1:0;if(!delta)return;e.preventDefault();if(side==="left"){left.y=clamp(left.y+delta,-1,1);if(profile!=="sail"&&Math.abs(left.y)<.06){left.y=0;neutralDetent=true}else neutralDetent=false;paint($(id),left)}else{right.x=clamp(right.x-delta,-1,1);paint($(id),right)}update()})});
 document.querySelectorAll("[data-profile]").forEach(btn=>btn.addEventListener("click",()=>{
-profile=btn.dataset.profile;
+profile=btn.dataset.profile;window.MicroMotionDemo.select(profile);theme.value=window.MicroMotionDemo.model().theme;document.body.dataset.theme=theme.value;
 neutralDetent=Math.abs(left.y)<.055;
 $("rotaryKnob").style.setProperty("--rotary-angle",({sail:-45,single:0,twin:45})[profile]+"deg");
 $("profileDrum").textContent=({sail:"SAIL",single:"CRUISE",twin:"TWIN"})[profile];
-$("profileDrum").animate([{transform:"translateY(-65%)",opacity:.3},{transform:"translateY(0)",opacity:1}],{duration:190,easing:"ease-out"});
+if(!window.MicroMotionDemo.state.person.reducedMotion)$("profileDrum").animate([{transform:"translateY(-65%)",opacity:.3},{transform:"translateY(0)",opacity:1}],{duration:190,easing:"ease-out"});
 document.querySelectorAll("[data-profile]").forEach(b=>b.classList.toggle("active",b===btn));
 $("leftTitle").textContent=profile==="sail"?"Segel":"Gas";
 $("rightTitle").textContent=profile==="twin"?"Differenzial":"Ruder";
@@ -734,7 +734,7 @@ paint($("leftPad"),left);paint($("rightPad"),right);update();
 });
 setInterval(()=>{
 const now=performance.now(),dt=Math.min((now-lastTick)/1000,.25);lastTick=now;
-const rudder=right.x;
+const rudder=window.MicroMotionDemo.steer(right.x);
 const speed=profile==="sail"?.45:Math.max(0,Math.abs(left.y));
 heading+=rudder*42*speed*dt;
 compassUpdate();
@@ -766,4 +766,4 @@ if(label){
  label.addEventListener('keydown',()=>{touchClickPending=false;});
 }
 })();
-</script><script>(()=>{const $=id=>document.getElementById(id);$('demoSettings').onclick=()=>{$('stop').click();$('demoDialog').showModal()};$('closeDemo').onclick=()=>$('demoDialog').close();$('demoHand').onchange=()=>{$('stop').click();document.body.dataset.hand=$('demoHand').value};$('demoLimit').oninput=()=>{$('stop').click();$('demoLimitValue').textContent=$('demoLimit').value+' %'};$('demoReset').onclick=()=>{$('stop').click();$('demoLimit').value=100;$('demoLimitValue').textContent='100 %';$('demoHand').value='right';document.body.dataset.hand='right';$('theme').value='walnut';$('theme').dispatchEvent(new Event('change'));document.querySelector('[data-profile="sail"]').click()};document.addEventListener('visibilitychange',()=>{if(document.hidden)$('stop').click()});window.addEventListener('blur',()=>$('stop').click());})();</script></body></html>
+</script><script src="preview-cockpit.js"></script></body></html>
