@@ -6,4 +6,4 @@ Eigener Einstellungsbereich mit Bedienprofil, Fahrzeugkennlinien, Anzeige und Hi
 
 Icon-/Manifestpaket für Home-Screen-Verknüpfungen und Browser. Unterstützungsumfang unterscheidet sich je Browser; keine universelle Installierbarkeitszusage.
 
-Stand:14.November2026. Produktentwicklung; keine zugesagten fertigen Hardwarepakete, kein sicherheitswirksamer Notstopp und keine neue Lizenzfestlegung.
+Stand:18.November2026. Produktentwicklung; keine zugesagten fertigen Hardwarepakete, kein sicherheitswirksamer Notstopp und keine neue Lizenzfestlegung.

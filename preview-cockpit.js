@@ -1,4 +1,7 @@
 (()=>{'use strict';const $=id=>document.getElementById(id),D=window.MicroMotionDemo;
+const fullscreen=$('fullscreen');
+const appMode=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+if(fullscreen&&(appMode||typeof document.documentElement.requestFullscreen!=='function'||document.fullscreenEnabled===false))fullscreen.hidden=true;
 $('demoSettings').textContent='Einstellungen';$('demoSettings').onclick=()=>{$('stop').click();location.href='settings.html'};
 $('demoReset').onclick=()=>{$('stop').click();D.reset();location.reload()};
 document.querySelector('[data-profile="'+D.state.activeProfile+'"]')?.click();
