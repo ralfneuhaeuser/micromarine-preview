@@ -1,9 +1,13 @@
-# MicroMotion · interaktive Vorschau
+# MicroMotion – interactive model-control demo
 
-Browserdemo für Modellsteuerungs-Oberflächen. Startdesign Walnut; weitere Designs und Segel-/Motor-/Differential-Demos auswählbar. Alle Instrumente und Steuerwerte sind simuliert. Keine Fahrzeug-, USB-, Bluetooth- oder WLAN-Hardwareverbindung aus dieser Demo. STOPP setzt nur simulierte Ausgaben zurück.
+Build `demo-2026.11.25.1`. A simulation-only browser presentation: no vehicle, firmware, serial, Bluetooth or actuator connection. All course/altitude/feedback values are illustrative, not measured flight data.
 
-Eigener Einstellungsbereich mit Bedienprofil, Fahrzeugkennlinien, Anzeige und Hilfe. Einstellungen beeinflussen nur die Simulation, keine echte Fahrzeugkalibrierung. Ohne Konto und Analyse-/Trackingdienste; Designauswahl kann lokal im Browser gespeichert werden. Walnut ist die Ausgangsgestaltung; explizit gespeicherte Einstellungen werden übernommen.
+Choose boats, an indoor flyer, a light aircraft or a glider. Flight views offer mirrored hand arrangement, classic or device-tilt input, volatile trims, lights and an explicitly simulated autopilot with a gust demonstration. Glider control uses spoilers instead of a motor. Graphite, riveted and brushed-aluminium flight finishes are selectable.
 
-Icon-/Manifestpaket für Home-Screen-Verknüpfungen und Browser. Unterstützungsumfang unterscheidet sich je Browser; keine universelle Installierbarkeitszusage.
+Tilt control requires HTTPS, supported sensors and explicit browser permission where requested. Inputs remain local. Real iPhone sensor/multitouch validation is still pending. Autopilot and tilt input are mutually exclusive; a gust cannot override tilt input. STOPP resets simulated outputs and trims. This is not a safety-certified emergency stop or a real flight-control system.
 
-Stand:18.November2026. Produktentwicklung; keine zugesagten fertigen Hardwarepakete, kein sicherheitswirksamer Notstopp und keine neue Lizenzfestlegung.
+Settings share hand arrangement and reduced motion across layouts; vehicle curves on the settings page still apply to boats. Flight trims and sensor neutral are volatile. No account, tracking or mandatory cloud service. Loading the hosted demo needs a network connection; a full offline cache is not provided.
+
+Reproducible build sources are retained in the separate development project. Runtime file hashes: `release-manifest.json`. Logic checks: `node --test test_config.cjs test_flight.cjs` (29 passing checks on 25 November 2026). Browser layout tests do not prove real hardware behavior.
+
+This consolidation branch is a source review checkpoint, not an automatic change to the published main branch. No new software license or product availability is declared.

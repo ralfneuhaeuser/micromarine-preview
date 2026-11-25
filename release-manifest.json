@@ -1,0 +1,36 @@
+{
+  "build_id": "demo-2026.11.25.1",
+  "date": "2026-11-25",
+  "mode": "simulation_only",
+  "hardware_transport": false,
+  "product_release": false,
+  "profiles": [
+    "sail",
+    "single",
+    "twin",
+    "indoor",
+    "plane",
+    "glider"
+  ],
+  "settings_schema": 1,
+  "flight_settings": "volatile trim and sensor neutral; personal hand/reduced-motion shared with boat demo",
+  "sha256": {
+    "index.html": "2904445c1bf6694fb90a23914587f61ddde48ab689aced13818bb31243cc3eaa",
+    "settings.html": "3504a320e0c7b8d9784d1e02e2cab0ca0eab956bb522489b2d18dab077de38b1",
+    "settings.css": "3483e8c3096b6eeb4556bb50aca80aa07533336fbfb898ef91f056fd521c1622",
+    "settings.js": "5ded64c49f9629f400bed112c6b6dbe089c17b268d9293c62d361ca5a1dacf1d",
+    "demo-config.js": "9e0146e67b1b4c6496ddc8dbac83cb88bb41f0a6ffc789b26a8d5fe1a8501853",
+    "demo-runtime.js": "7fce033b81960fddc621840ea968e1b0683b8f0501b0bdc4960bfbeda06c114a",
+    "preview-cockpit.js": "3273ab4287774dae37d5a249fd47fb2ea73ab7b1508f62af6c1a92fa24a9fe01",
+    "flight-demo.js": "c4fff4d3000cfd8b97e9cd6c8388bfced04f65cb92595e2fb4ecfd03d6ab6af8",
+    "flight-demo.css": "4c84ee9ba69a9b3d98e88d427ff28e89e885b5d53e2b8ad65dc1ac521253e933",
+    "manifest.webmanifest": "94032a848bb5103379884eb6337bc0e47fff2b968780413ec409aa1d3900eec3",
+    "favicon.ico": "f6e589ef952e68080a29304b32f83a3022743e62433356da8d0c13fb619d4c88",
+    "favicon-32.png": "614d0780090ba94655fab47cdb5a41a0b98092bdf3b201e25bc5333e56660cfe",
+    "apple-touch-icon.png": "868cc58d4bf5fd3185366debddcb404035d5ca686b481a0b0b88c22e71450479",
+    "icon-192.png": "547b78c84647378814a5601c67605cc65790017f6cfa6c1181bcc8e10ed00b11",
+    "icon-512.png": "0fa477351cdd2dfda4390ad6e853940d4f786ef62720511c5bfa4ce8ded6a6e8",
+    "maskable-192.png": "9012e25ba3f7bdd76e9ed154669a84019e90f603f1ef1c9b3adadaa1375fc5dc",
+    "maskable-512.png": "5cc0bf7e93bdb01b79269c7067dee224a5f4d849ec23c58f2fcc20cb8337be46"
+  }
+}
